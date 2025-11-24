@@ -4,19 +4,19 @@ import { Suggestion } from '../../models/suggestion';
 @Component({
   selector: 'app-list-suggestion',
   templateUrl: './list-suggestion.component.html',
-  styleUrl: './list-suggestion.component.css',
+  styleUrls: ['./list-suggestion.component.css'],
 })
 export class ListSuggestionComponent {
-  searchTerm: string = '';
-  categoryTerm: string = '';
+  searchText: string = '';
+  searchCategory: string = '';
+
   favorites: Suggestion[] = [];
 
   suggestions: Suggestion[] = [
     {
       id: 1,
       title: 'Organiser une journée team building',
-      description:
-        "Suggestion pour organiser une journée de team building pour renforcer les liens entre les membres de l'équipe.",
+      description: 'Suggestion pour organiser une journée de team building...',
       category: 'Événements',
       date: new Date('2025-01-20'),
       status: 'acceptee',
@@ -25,8 +25,7 @@ export class ListSuggestionComponent {
     {
       id: 2,
       title: 'Améliorer le système de réservation',
-      description:
-        'Proposition pour améliorer la gestion des réservations en ligne avec un système de confirmation automatique.',
+      description: 'Proposition pour améliorer la gestion des réservations...',
       category: 'Technologie',
       date: new Date('2025-01-15'),
       status: 'refusee',
@@ -35,8 +34,7 @@ export class ListSuggestionComponent {
     {
       id: 3,
       title: 'Créer un système de récompenses',
-      description:
-        "Mise en place d'un programme de récompenses pour motiver les employés et reconnaître leurs efforts.",
+      description: "Mise en place d'un programme de récompenses...",
       category: 'Ressources Humaines',
       date: new Date('2025-01-25'),
       status: 'refusee',
@@ -45,8 +43,7 @@ export class ListSuggestionComponent {
     {
       id: 4,
       title: "Moderniser l'interface utilisateur",
-      description:
-        "Refonte complète de l'interface utilisateur pour une meilleure expérience utilisateur.",
+      description: "Refonte complète de l'UI...",
       category: 'Technologie',
       date: new Date('2025-01-30'),
       status: 'en_attente',
@@ -55,8 +52,7 @@ export class ListSuggestionComponent {
     {
       id: 5,
       title: 'Formation à la sécurité informatique',
-      description:
-        "Organisation d'une formation sur les bonnes pratiques de sécurité informatique pour tous les employés.",
+      description: 'Formation sur la sécurité informatique...',
       category: 'Formation',
       date: new Date('2025-02-05'),
       status: 'acceptee',
@@ -64,29 +60,20 @@ export class ListSuggestionComponent {
     },
   ];
 
-  // retourner les suggestions filtrées par titre et catégorie
-  filteredSuggestions(): Suggestion[] {
-    const term = this.searchTerm.trim().toLowerCase();
-    const cat = this.categoryTerm.trim().toLowerCase();
-    return this.suggestions.filter((s) => {
-      const matchTitle = !term || s.title.toLowerCase().includes(term);
-      const matchCat = !cat || s.category.toLowerCase().includes(cat);
-      return matchTitle && matchCat;
-    });
-  }
-
-  like(s: Suggestion) {
-    if (s.likes == null) s.likes = 0;
-    s.likes++;
+  incrementLike(s: Suggestion) {
+    s.likes!++;
   }
 
   addToFavorites(s: Suggestion) {
-    const exists = this.favorites.some((f) => f.id === s.id);
-    if (!exists) this.favorites.push(s);
+    this.favorites.push(s);
   }
 
-  // helper pour savoir si on affiche les boutons
-  canShowButtons(s: Suggestion): boolean {
-    return s.status !== 'refusee';
+
+  filterSuggestions(): Suggestion[] {
+    return this.suggestions.filter(
+      (s) =>
+        s.title.toLowerCase().includes(this.searchText.toLowerCase()) &&
+        (this.searchCategory === '' || s.category === this.searchCategory)
+    );
   }
 }

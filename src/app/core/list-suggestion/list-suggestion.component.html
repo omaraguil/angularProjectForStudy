@@ -1,32 +1,40 @@
-<div class="search-bar">
-<input type="text" placeholder="Rechercher par titre..." [(ngModel)]="searchTerm" />
-<input type="text" placeholder="Filtrer par catégorie..." [(ngModel)]="categoryTerm" />
-</div>
+<div class="container">
+  <!-- 🔍 Barre de recherche -->
+  <input
+    type="text"
+    [(ngModel)]="searchText"
+    placeholder="Rechercher par titre..."
+  />
 
+  <select [(ngModel)]="searchCategory">
+    <option value="">Toutes catégories</option>
+    <option value="Événements">Événements</option>
+    <option value="Technologie">Technologie</option>
+    <option value="Ressources Humaines">Ressources Humaines</option>
+    <option value="Formation">Formation</option>
+  </select>
 
-<ul class="suggestions-list">
-<li *ngFor="let s of filteredSuggestions()" class="suggestion-card">
-<h3>{{ s.title }}</h3>
-<p>{{ s.description }}</p>
-<small>Catégorie: {{ s.category }} — Date: {{ s.date | date:'mediumDate' }} — Statut: {{ s.status }}</small>
+  <div *ngFor="let s of filterSuggestions()" class="suggestion-card">
+    <h2>{{ s.title }}</h2>
+    <p>{{ s.description }}</p>
 
+    <p><strong>Catégorie :</strong> {{ s.category }}</p>
+    <p><strong>Date :</strong> {{ s.date | date }}</p>
+    <p><strong>Status :</strong> {{ s.status }}</p>
 
-<div class="actions" *ngIf="canShowButtons(s)">
-<button (click)="like(s)">Like ({{ s.likes || 0 }})</button>
-<button (click)="addToFavorites(s)">Ajouter aux favoris</button>
-</div>
+    <!-- 🔥 condition : on n'affiche PAS les boutons si refusée -->
+    <div *ngIf="s.status !== 'refusee'">
+      <button (click)="incrementLike(s)">👍 Like ({{ s.likes }})</button>
 
+      <button (click)="addToFavorites(s)">⭐ Ajouter aux favoris</button>
+    </div>
+  </div>
 
-<div *ngIf="!canShowButtons(s)">
-<em>Suggestion refusée — actions non disponibles</em>
-</div>
-</li>
-</ul>
-
-
-<div class="favorites">
-<h4>Favoris ({{ favorites.length }})</h4>
-<ul>
-<li *ngFor="let f of favorites">{{ f.title }} — {{ f.category }}</li>
-</ul>
+  <!-- ⭐ Liste des favoris -->
+  <h3>Suggestions favorites :</h3>
+  <ul>
+    <li *ngFor="let fav of favorites">
+      {{ fav.title }}
+    </li>
+  </ul>
 </div>
