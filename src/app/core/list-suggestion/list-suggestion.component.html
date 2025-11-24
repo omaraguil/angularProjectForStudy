@@ -1,0 +1,32 @@
+<div class="search-bar">
+<input type="text" placeholder="Rechercher par titre..." [(ngModel)]="searchTerm" />
+<input type="text" placeholder="Filtrer par catégorie..." [(ngModel)]="categoryTerm" />
+</div>
+
+
+<ul class="suggestions-list">
+<li *ngFor="let s of filteredSuggestions()" class="suggestion-card">
+<h3>{{ s.title }}</h3>
+<p>{{ s.description }}</p>
+<small>Catégorie: {{ s.category }} — Date: {{ s.date | date:'mediumDate' }} — Statut: {{ s.status }}</small>
+
+
+<div class="actions" *ngIf="canShowButtons(s)">
+<button (click)="like(s)">Like ({{ s.likes || 0 }})</button>
+<button (click)="addToFavorites(s)">Ajouter aux favoris</button>
+</div>
+
+
+<div *ngIf="!canShowButtons(s)">
+<em>Suggestion refusée — actions non disponibles</em>
+</div>
+</li>
+</ul>
+
+
+<div class="favorites">
+<h4>Favoris ({{ favorites.length }})</h4>
+<ul>
+<li *ngFor="let f of favorites">{{ f.title }} — {{ f.category }}</li>
+</ul>
+</div>

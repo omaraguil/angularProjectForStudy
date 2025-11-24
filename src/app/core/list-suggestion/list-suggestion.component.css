@@ -1,0 +1,12 @@
+.suggestion-card {
+  border: 1px solid #ddd;
+  padding: 12px;
+  margin-bottom: 8px;
+  border-radius: 6px;
+}
+.search-bar {
+  margin-bottom: 12px;
+}
+.actions button {
+  margin-right: 8px;
+}
