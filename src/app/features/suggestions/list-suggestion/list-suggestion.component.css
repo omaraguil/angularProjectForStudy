@@ -1,5 +1,4 @@
 .container {
-  max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
@@ -39,7 +38,7 @@ input[type="text"]::placeholder {
   padding: 20px;
   margin: 20px 0;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  border-left: 4px solid #4a90e2;
+
   transition: all 0.3s ease;
 }
 

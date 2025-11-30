@@ -1,17 +1,18 @@
 import { Component } from '@angular/core';
-import { Suggestion } from '../../models/suggestion';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Suggestion } from '../../../models/suggestion';
 
 @Component({
-  selector: 'app-list-suggestion',
-  templateUrl: './list-suggestion.component.html',
-  styleUrls: ['./list-suggestion.component.css'],
+  selector: 'app-suggestion-detail',
+  templateUrl: './suggestion-detail.component.html',
+  styleUrl: './suggestion-detail.component.css',
 })
-export class ListSuggestionComponent {
-  searchText: string = '';
-  searchCategory: string = '';
+export class SuggestionDetailComponent {
+ 
+  id!: number;
+  suggestion!: Suggestion | undefined;
 
-  favorites: Suggestion[] = [];
-
+  // On copie la même liste que dans list-suggestion (pour l'exercice)
   suggestions: Suggestion[] = [
     {
       id: 1,
@@ -60,20 +61,14 @@ export class ListSuggestionComponent {
     },
   ];
 
-  incrementLike(s: Suggestion) {
-    s.likes!++;
+  constructor(private route: ActivatedRoute, private router: Router) {}
+
+  ngOnInit(): void {
+    this.id = Number(this.route.snapshot.paramMap.get('id'));
+    this.suggestion = this.suggestions.find(s => s.id === this.id);
   }
 
-  addToFavorites(s: Suggestion) {
-    this.favorites.push(s);
-  }
-
-
-  filterSuggestions(): Suggestion[] {
-    return this.suggestions.filter(
-      (s) =>
-        s.title.toLowerCase().includes(this.searchText.toLowerCase()) &&
-        (this.searchCategory === '' || s.category === this.searchCategory)
-    );
+  backToList() {
+    this.router.navigate(['/suggestions']);
   }
 }

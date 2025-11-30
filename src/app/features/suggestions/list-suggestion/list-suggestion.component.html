@@ -28,6 +28,8 @@
 
       <button (click)="addToFavorites(s)">⭐ Ajouter aux favoris</button>
     </div>
+
+    <button [routerLink]="['/suggestions', s.id]">Details</button>
   </div>
 
   <!-- ⭐ Liste des favoris -->
