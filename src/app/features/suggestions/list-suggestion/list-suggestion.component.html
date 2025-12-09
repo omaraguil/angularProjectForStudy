@@ -1,42 +1,67 @@
 <div class="container">
-  <!-- 🔍 Barre de recherche -->
-  <input
-    type="text"
-    [(ngModel)]="searchText"
-    placeholder="Rechercher par titre..."
-  />
+  <h2>Liste des Suggestions</h2>
 
-  <select [(ngModel)]="searchCategory">
-    <option value="">Toutes catégories</option>
-    <option value="Événements">Événements</option>
-    <option value="Technologie">Technologie</option>
-    <option value="Ressources Humaines">Ressources Humaines</option>
-    <option value="Formation">Formation</option>
-  </select>
+  <!-- Barre de recherche -->
+  <div class="search-bar">
+    <input 
+      type="text" 
+      [(ngModel)]="searchText" 
+      placeholder="Rechercher par titre..."
+      class="search-input">
+    
+    <select [(ngModel)]="searchCategory" class="search-select">
+      <option value="">Toutes les catégories</option>
+      <option value="Infrastructure et bâtiments">Infrastructure et bâtiments</option>
+      <option value="Technologie et services numériques">Technologie et services numériques</option>
+      <option value="Restauration et cafétéria">Restauration et cafétéria</option>
+      <option value="Hygiène et environnement">Hygiène et environnement</option>
+      <option value="Transport et mobilité">Transport et mobilité</option>
+      <option value="Activités et événements">Activités et événements</option>
+      <option value="Sécurité">Sécurité</option>
+      <option value="Communication interne">Communication interne</option>
+      <option value="Accessibilité">Accessibilité</option>
+      <option value="Autre">Autre</option>
+    </select>
 
-  <div *ngFor="let s of filterSuggestions()" class="suggestion-card">
-    <h2>{{ s.title }}</h2>
-    <p>{{ s.description }}</p>
-
-    <p><strong>Catégorie :</strong> {{ s.category }}</p>
-    <p><strong>Date :</strong> {{ s.date | date }}</p>
-    <p><strong>Status :</strong> {{ s.status }}</p>
-
-    <!-- 🔥 condition : on n'affiche PAS les boutons si refusée -->
-    <div *ngIf="s.status !== 'refusee'">
-      <button (click)="incrementLike(s)">👍 Like ({{ s.likes }})</button>
-
-      <button (click)="addToFavorites(s)">⭐ Ajouter aux favoris</button>
-    </div>
-
-    <button [routerLink]="['/suggestions', s.id]">Details</button>
+    <button (click)="onAdd()" class="btn-add">➕ Ajouter une suggestion</button>
   </div>
 
-  <!-- ⭐ Liste des favoris -->
-  <h3>Suggestions favorites :</h3>
-  <ul>
-    <li *ngFor="let fav of favorites">
-      {{ fav.title }}
-    </li>
-  </ul>
+  <!-- Liste des suggestions -->
+  <div class="suggestions-grid">
+    <div *ngFor="let s of filterSuggestions()" class="suggestion-card">
+      <h3>{{ s.title }}</h3>
+      <p class="description">{{ s.description }}</p>
+      <p><strong>Catégorie:</strong> {{ s.category }}</p>
+      <p><strong>Status:</strong> <span class="status">{{ s.status }}</span></p>
+      <p><strong>Date:</strong> {{ s.date | date:'dd/MM/yyyy' }}</p>
+      
+      <div class="actions">
+        <button (click)="incrementLike(s)" class="btn-like">
+          ❤️ {{ s.likes || 0 }}
+        </button>
+        <button (click)="addToFavorites(s)" class="btn-favorite">
+          ⭐ Favoris
+        </button>
+        <button (click)="goToDetails(s.id)" class="btn-details">
+          👁️ Détails
+        </button>
+        <button (click)="deleteSuggestion(s.id)" class="btn-delete">
+          🗑️ Supprimer
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Message si aucune suggestion -->
+  <div *ngIf="filterSuggestions().length === 0" class="no-results">
+    <p>Aucune suggestion trouvée.</p>
+  </div>
+
+  <!-- Favoris -->
+  <div *ngIf="favorites.length > 0" class="favorites-section">
+    <h3>⭐ Mes Favoris ({{ favorites.length }})</h3>
+    <ul>
+      <li *ngFor="let f of favorites">{{ f.title }}</li>
+    </ul>
+  </div>
 </div>

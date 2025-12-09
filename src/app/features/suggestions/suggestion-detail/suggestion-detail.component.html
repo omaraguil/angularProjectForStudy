@@ -1,51 +1,17 @@
-<div class="suggestion-detail-container">
-  <div class="detail-card" *ngIf="suggestion">
-    <!-- En-tête avec le titre -->
-    <div class="detail-header">
-      <h1 class="suggestion-title">{{ suggestion.title }}</h1>
-      <div class="status-badge">
-        {{ suggestion.status }}
-      </div>
-    </div>
+<div class="detail-container" *ngIf="suggestion">
+  <h2>{{ suggestion.title }}</h2>
+  <p class="description"><strong>Description:</strong><br>{{ suggestion.description }}</p>
+  <p><strong>Catégorie:</strong> {{ suggestion.category }}</p>
+  <p><strong>Status:</strong> <span class="status">{{ suggestion.status }}</span></p>
+  <p><strong>Date:</strong> {{ suggestion.date | date:'dd/MM/yyyy HH:mm' }}</p>
+  <p><strong>Likes:</strong> ❤️ {{ suggestion.likes || 0 }}</p>
 
-    <!-- Métadonnées -->
-    <div class="metadata-grid">
-      <div class="meta-item">
-        <span class="meta-label">ID</span>
-        <span class="meta-value">#{{ suggestion.id }}</span>
-      </div>
-      <div class="meta-item">
-        <span class="meta-label">Category</span>
-        <span class="meta-value category-tag">{{ suggestion.category }}</span>
-      </div>
-      <div class="meta-item">
-        <span class="meta-label">Date</span>
-        <span class="meta-value">{{
-          suggestion.date | date : "dd/MM/yyyy"
-        }}</span>
-      </div>
-    </div>
-
-    <!-- Description -->
-    <div class="description-section">
-      <h3 class="section-title">Description</h3>
-      <div class="description-content">
-        <p>{{ suggestion.description }}</p>
-      </div>
-    </div>
-
-    <!-- Actions -->
-    <div class="action-section">
-      <button class="btn btn-secondary" (click)="backToList()">
-        <i class="icon-arrow-left"></i>
-        Back to list
-      </button>
-    </div>
+  <div class="actions">
+    <button (click)="goToUpdate()" class="btn-update">✏️ Modifier</button>
+    <button (click)="goBack()" class="btn-back">⬅️ Retour à la liste</button>
   </div>
+</div>
 
-  <!-- Loading State -->
-  <div class="loading-state" *ngIf="!suggestion">
-    <div class="loading-spinner"></div>
-    <p>Loading suggestion details...</p>
-  </div>
+<div *ngIf="!suggestion" class="loading">
+  <p>Chargement...</p>
 </div>
